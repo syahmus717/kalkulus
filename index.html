@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HydroLogic | Kelompok 3 Kalkulus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        /* Logika Sembunyi/Tampil Halaman */
+        .page-content { display: none; }
+        .active-page { display: block; animation: fadeIn 0.4s ease-out; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .nav-link.active { 
+            color: #11caa0; 
+            border-bottom: 3px solid #11caa0;
+            padding-bottom: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <nav class="fixed top-0 w-full bg-[#005088] text-white z-[100] shadow-2xl">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="showPage('beranda')">
+                <div class="bg-[#11caa0] p-1.5 rounded-lg">
+                    <svg class="w-6 h-6 text-[#005088]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                </div>
+                <span class="text-xl font-extrabold tracking-tighter italic">HYDRO<span class="text-[#11caa0]">LOGIC</span></span>
+            </div>
+            
+            <div class="flex gap-8 text-xs font-bold uppercase tracking-widest">
+                <button onclick="showPage('beranda')" id="nav-beranda" class="nav-link active">Beranda</button>
+                <button onclick="showPage('perhitungan')" id="nav-perhitungan" class="nav-link">Perhitungan</button>
+                <button onclick="showPage('tentang')" id="nav-tentang" class="nav-link">Tentang Kami</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="mt-20">
+
+        <section id="page-beranda" class="page-content active-page min-h-[90vh] flex items-center bg-[#005088] text-white">
+            <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center py-12">
+                <div>
+                    <h1 class="text-5xl font-black leading-tight mb-6">Efisiensi Air dengan <br><span class="text-[#11caa0]">Kalkulus Komputasi.</span></h1>
+                    <p class="text-blue-100 text-lg mb-8 leading-relaxed">
+                        HydroLogic hadir untuk membantu petani memantau penggunaan air secara presisi. Dengan memanfaatkan <strong>Integral Tentu</strong>, sistem kami mampu menghitung volume air yang mengalir meskipun debit air tidak stabil.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <span class="bg-[#11caa0] p-1 rounded-full text-[#005088] font-bold">✓</span>
+                            <p class="text-sm"><strong>Akurasi Tinggi:</strong> Menggunakan Aturan Trapesium untuk data sensor.</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="bg-[#11caa0] p-1 rounded-full text-[#005088] font-bold">✓</span>
+                            <p class="text-sm"><strong>Hemat Biaya:</strong> Mencegah pemborosan air dan listrik pompa.</p>
+                        </div>
+                    </div>
+                    <button onclick="showPage('perhitungan')" class="mt-10 bg-[#11caa0] text-[#005088] px-10 py-4 rounded-full font-black hover:scale-105 transition shadow-2xl uppercase tracking-wider">Mulai Menghitung</button>
+                </div>
+                <div class="bg-white/5 border border-white/20 p-8 rounded-[40px] backdrop-blur-sm">
+                    <h3 class="text-[#11caa0] font-bold text-sm mb-4 tracking-widest uppercase">Konsep Dasar</h3>
+                    <div class="bg-slate-900 p-6 rounded-2xl mb-6 text-center shadow-inner border border-slate-700">
+                        <p class="text-3xl font-mono italic text-blue-400">V = ∫<sub class="text-white">a</sub><sup class="text-white">b</sup> f(t) dt</p>
+                    </div>
+                    <p class="text-sm text-blue-100 leading-relaxed italic">
+                        "Integral tentu merepresentasikan luas daerah di bawah kurva laju aliran air (debit) terhadap waktu. Jumlah luas inilah yang menjadi total volume air yang telah keluar."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="page-perhitungan" class="page-content min-h-[90vh] py-12 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="mb-10 flex flex-col md:flex-row justify-between items-end gap-4 border-b pb-6 border-slate-200">
+                    <div>
+                        <h2 class="text-3xl font-black text-[#005088] uppercase tracking-tighter">Fitur Kalkulasi & Visualisasi</h2>
+                        <p class="text-slate-500 font-medium italic text-sm">Masukkan data sensor debit untuk melihat hasil integral.</p>
+                    </div>
+                    <button onclick="downloadExcel()" class="bg-green-600 text-white px-5 py-2 rounded-xl text-xs font-bold hover:bg-green-700 transition">Export ke Excel</button>
+                </div>
+
+                <div class="grid lg:grid-cols-12 gap-8">
+                    <div class="lg:col-span-4 space-y-6">
+                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-3 tracking-widest">Luas Lahan Target (m²)</label>
+                            <input type="number" id="inputLuas" value="1000" class="w-full p-3 bg-slate-50 border rounded-xl font-bold focus:ring-2 focus:ring-[#005088] outline-none">
+                        </div>
+
+                        <form id="formDebit" class="bg-[#005088] p-8 rounded-[35px] shadow-2xl text-white">
+                            <h3 class="text-xs font-black text-[#11caa0] uppercase mb-6 tracking-widest">Entri Data Sensor</h3>
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div>
+                                    <label class="block text-[10px] text-blue-300 font-bold mb-2">MENIT (t)</label>
+                                    <input type="number" id="inputWaktu" class="w-full p-3 bg-white/10 border border-white/20 rounded-xl outline-none font-bold focus:border-[#11caa0]" required>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-blue-300 font-bold mb-2">DEBIT (L/mnt)</label>
+                                    <input type="number" id="inputDebit" class="w-full p-3 bg-white/10 border border-white/20 rounded-xl outline-none font-bold focus:border-[#11caa0]" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full py-4 bg-[#11caa0] text-[#005088] font-black rounded-xl hover:bg-white transition uppercase shadow-xl">Simpan & Proses</button>
+                        </form>
+                    </div>
+
+                    <div class="lg:col-span-8 space-y-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-white p-6 rounded-3xl border shadow-sm flex justify-between items-center">
+                                <span class="text-xs font-bold text-slate-400 uppercase">Volume Terisi</span>
+                                <h2 id="cardVolume" class="text-3xl font-black text-[#005088]">0 L</h2>
+                            </div>
+                            <div class="bg-white p-6 rounded-3xl border shadow-sm flex justify-between items-center">
+                                <span class="text-xs font-bold text-slate-400 uppercase">Progres</span>
+                                <h2 id="cardPercent" class="text-3xl font-black text-[#11caa0]">0%</h2>
+                            </div>
+                        </div>
+                        <div class="bg-white p-8 rounded-3xl border shadow-sm h-[400px]">
+                            <canvas id="flowChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="page-tentang" class="page-content min-h-[90vh] py-12 bg-[#f3f0df]">
+            <div class="max-w-6xl mx-auto px-6 text-center">
+                <h2 class="text-4xl font-black text-slate-900 mb-2 uppercase tracking-tighter">Tim Pengembang</h2>
+                <p class="text-slate-500 font-bold uppercase text-xs tracking-[0.3em] mb-16">Informatika UNSIL - Kelompok 3</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-[40px] shadow-lg border-b-8 border-[#005088] transform hover:-translate-y-2 transition">
+                        <h4 class="text-xl font-black text-slate-800 leading-tight">FASHA OCTA RAMDANI</h4>
+                        <p class="text-[10px] text-blue-600 font-bold mt-2 uppercase tracking-widest">Konseptor</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-[40px] shadow-lg border-b-8 border-[#11caa0] transform hover:-translate-y-2 transition">
+                        <h4 class="text-xl font-black text-slate-800 leading-tight">BIMBIM DANY SAPUTRA</h4>
+                        <p class="text-[10px] text-[#11caa0] font-bold mt-2 uppercase tracking-widest">Ahli Kalkulus</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-[40px] shadow-lg border-b-8 border-[#005088] transform hover:-translate-y-2 transition">
+                        <h4 class="text-xl font-black text-slate-800 leading-tight">NAZWA NURUL AULIA</h4>
+                        <p class="text-[10px] text-blue-600 font-bold mt-2 uppercase tracking-widest">Visualisasi Data</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-[40px] shadow-lg border-b-8 border-[#11caa0] transform hover:-translate-y-2 transition">
+                        <h4 class="text-xl font-black text-slate-800 leading-tight">SYAHRIL MUSTHOFA</h4>
+                        <p class="text-[10px] text-[#11caa0] font-bold mt-2 uppercase tracking-widest">Developer Logika</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-[40px] shadow-lg border-b-8 border-[#005088] transform hover:-translate-y-2 transition">
+                        <h4 class="text-xl font-black text-slate-800 leading-tight">REVA IMEILDA</h4>
+                        <p class="text-[10px] text-blue-600 font-bold mt-2 uppercase tracking-widest">Dokumentasi</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-[40px] shadow-lg border-b-8 border-[#11caa0] transform hover:-translate-y-2 transition">
+                        <h4 class="text-xl font-black text-slate-800 leading-tight">DZULFIKAR ALHAMRI</h4>
+                        <p class="text-[10px] text-[#11caa0] font-bold mt-2 uppercase tracking-widest">UI/UX Designer</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- SISTEM NAVIGASI ---
+        function showPage(pageId) {
+            // Sembunyikan semua halaman
+            document.querySelectorAll('.page-content').forEach(el => {
+                el.classList.remove('active-page');
+            });
+            // Tampilkan halaman yang dipilih
+            document.getElementById('page-' + pageId).classList.add('active-page');
+            
+            // Update tampilan tombol Navbar
+            document.querySelectorAll('.nav-link').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.getElementById('nav-' + pageId).classList.add('active');
+            
+            // Scroll ke atas otomatis
+            window.scrollTo(0, 0);
+        }
+
+        // --- LOGIKA PERHITUNGAN ---
+        let dataPoints = [];
+        let luasLahan = 1000;
+        let kebutuhanAir = 10;
+
+        const ctx = document.getElementById('flowChart').getContext('2d');
+        const flowChart = new Chart(ctx, {
+            type: 'line',
+            data: { 
+                labels: [], 
+                datasets: [{ 
+                    label: 'Laju Debit Air (L/mnt)', 
+                    data: [], 
+                    borderColor: '#11caa0', 
+                    fill: true, 
+                    backgroundColor: 'rgba(17, 202, 160, 0.1)', 
+                    tension: 0.4,
+                    borderWidth: 3
+                }] 
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+
+        function calculateIntegral() {
+            if (dataPoints.length < 2) return 0;
+            let total = 0;
+            for (let i = 0; i < dataPoints.length - 1; i++) {
+                let dt = dataPoints[i+1].time - dataPoints[i].time;
+                let avg = (dataPoints[i].flow + dataPoints[i+1].flow) / 2;
+                total += dt * avg;
+            }
+            return total;
+        }
+
+        function updateUI() {
+            const current = calculateIntegral();
+            const target = luasLahan * kebutuhanAir;
+            document.getElementById('cardVolume').innerText = `${current.toLocaleString('id-ID')} L`;
+            document.getElementById('cardPercent').innerText = `${((current/target)*100).toFixed(1)}%`;
+            
+            flowChart.data.labels = dataPoints.map(d => `${d.time}m`);
+            flowChart.data.datasets[0].data = dataPoints.map(d => d.flow);
+            flowChart.update();
+        }
+
+        document.getElementById('formDebit').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const time = Number(document.getElementById('inputWaktu').value);
+            const flow = Number(document.getElementById('inputDebit').value);
+            
+            dataPoints.push({ time, flow });
+            dataPoints.sort((a,b) => a.time - b.time);
+            
+            updateUI();
+            
+            document.getElementById('inputWaktu').value = dataPoints[dataPoints.length - 1].time + 10;
+            document.getElementById('inputDebit').value = '';
+            document.getElementById('inputDebit').focus();
+        });
+
+        function downloadExcel() {
+            if(dataPoints.length === 0) return alert("Belum ada data!");
+            let csv = "Menit,Debit (L/menit)\n" + dataPoints.map(d => `${d.time},${d.flow}`).join("\n");
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('hidden', '');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'data_irigasi_kelompok3.csv');
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Inisialisasi
+        document.getElementById('inputWaktu').value = 0;
+    </script>
+</body>
+</html>
